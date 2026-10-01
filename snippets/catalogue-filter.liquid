@@ -1,0 +1,15 @@
+{% doc %}
+  Renders the category filter above a product grid. Products are matched by tag;
+  the filtering itself happens in theme.js on elements with a data-tags attribute.
+
+  @example
+  {% render 'catalogue-filter' %}
+{% enddoc %}
+
+{%- assign categories = 'sculptural,majestic,ethereal,rotten,pretty' | split: ',' -%}
+<nav class="filter" aria-label="{{ 'general.filter' | t }}" data-filter hidden>
+  <button type="button" class="filter__button" data-filter-value="" aria-pressed="true">{{ 'general.all' | t }}</button>
+  {%- for category in categories -%}
+    <button type="button" class="filter__button" data-filter-value="{{ category }}" aria-pressed="false">{{ category }}</button>
+  {%- endfor -%}
+</nav>

@@ -1,18 +1,30 @@
 <header class="site-header">
-  <a href="{{ routes.root_url }}" class="site-header__logo">{{ shop.name }}</a>
-  <nav aria-label="{{ 'general.main_menu' | t }}">
-    {%- for link in section.settings.menu.links -%}
-      <a href="{{ link.url }}">{{ link.title }}</a>
-    {%- endfor -%}
-    <a href="{{ routes.cart_url }}">{{ 'general.cart' | t }} ({{ cart.item_count }})</a>
-  </nav>
+  <div class="grid">
+    <div class="cell">
+      <a href="{{ routes.root_url }}" class="site-header__logo">{{ settings.brand_name }}</a>
+    </div>
+    {%- if section.settings.menu.links.size > 0 -%}
+      <nav class="cell" aria-label="{{ 'general.main_menu' | t }}">
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <div class="cell cell--span-2 site-header__intro-cell">
+        <div class="site-header__intro rte">{{ section.settings.intro }}</div>
+      </div>
+    {%- endif -%}
+  </div>
+  <a href="{{ routes.cart_url }}" class="site-header__cart"{% if template.name == 'cart' %} aria-current="page"{% endif %}>{{ 'general.cart' | t }} ({{ cart.item_count }})</a>
 </header>
 
 {% schema %}
 {
   "name": "Header",
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "richtext", "id": "intro", "label": "Intro text", "default": "<p>Sobra is a flower studio making bouquets and sculptural arrangements for weddings, restaurants and everyday life. Browse a selection of our work below.</p>" }
   ]
 }
 {% endschema %}

@@ -1,7 +1,29 @@
 <footer class="site-footer">
-  <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+  <div class="grid">
+    <div class="cell">
+      <p>{{ settings.brand_name }}</p>
+      {%- if section.settings.address != blank -%}<div class="rte">{{ section.settings.address }}</div>{%- endif -%}
+    </div>
+    <div class="cell">
+      {%- if section.settings.email != blank -%}<a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>{%- endif -%}
+      {%- if section.settings.phone != blank -%}<a href="tel:{{ section.settings.phone | remove: ' ' }}">{{ section.settings.phone }}</a>{%- endif -%}
+      {%- if section.settings.instagram != blank -%}<a href="{{ section.settings.instagram }}">Instagram</a>{%- endif -%}
+    </div>
+    <div class="cell">
+      <a href="{{ pages.about.url }}">{{ 'general.about' | t }}</a>
+    </div>
+    <div class="cell">&copy; {{ 'now' | date: '%Y' }} {{ settings.brand_name }}</div>
+  </div>
 </footer>
 
 {% schema %}
-{ "name": "Footer", "settings": [] }
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "richtext", "id": "address", "label": "Address", "default": "<p>Street 1<br>0000 City<br>Country</p>" },
+    { "type": "text", "id": "email", "label": "Email", "default": "hello@example.com" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "+00 000 00 00 00" },
+    { "type": "url", "id": "instagram", "label": "Instagram link" }
+  ]
+}
 {% endschema %}

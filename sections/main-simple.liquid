@@ -1,27 +1,54 @@
-<div class="page-width">
-  {%- case template.name -%}
-    {%- when 'page' -%}<h1>{{ page.title }}</h1>{{ page.content }}
-    {%- when 'article' -%}<h1>{{ article.title }}</h1>{{ article.content }}
-    {%- when 'blog' -%}<h1>{{ blog.title }}</h1>
-      {%- for article in blog.articles -%}<h2><a href="{{ article.url }}">{{ article.title }}</a></h2>{%- endfor -%}
-    {%- when 'cart' -%}
-      <h1>{{ 'general.cart' | t }}</h1>
-      <form action="{{ routes.cart_url }}" method="post">
+{%- case template.name -%}
+  {%- when 'cart' -%}
+    <form action="{{ routes.cart_url }}" method="post" class="cart">
+      <h1 class="cart__title">{{ 'general.cart' | t }}</h1>
+      {%- if cart.item_count == 0 -%}
+        <p>{{ 'general.cart_empty' | t }}</p>
+        <p><a href="{{ routes.all_products_collection_url }}" style="text-decoration: underline">{{ 'general.continue_shopping' | t }}</a></p>
+      {%- else -%}
         {%- for item in cart.items -%}
-          <p>{{ item.product.title }} × <input type="number" name="updates[]" value="{{ item.quantity }}" min="0"> {{ item.final_line_price | money }}</p>
+          <div class="cart__line">
+            <div class="product-card__image">
+              {%- if item.image -%}{{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: item.product.title }}{%- endif -%}
+            </div>
+            <div>
+              <a href="{{ item.url }}">{{ item.product.title }}</a>
+              {%- unless item.product.has_only_default_variant -%}<p>{{ item.variant.title }}</p>{%- endunless -%}
+              <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="{{ 'general.quantity' | t }}">
+              <p><a href="{{ item.url_to_remove }}" style="text-decoration: underline">{{ 'general.remove' | t }}</a></p>
+            </div>
+            <div>{{ item.final_line_price | money }}</div>
+          </div>
         {%- endfor -%}
-        <p>{{ cart.total_price | money }}</p>
-        <button type="submit" name="checkout">{{ 'general.checkout' | t }}</button>
-      </form>
-    {%- when 'search' -%}
+        <div class="cart__total">
+          <span>{{ 'general.total' | t }}</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        <button type="submit" name="checkout" class="button">{{ 'general.checkout' | t }}</button>
+      {%- endif -%}
+    </form>
+
+  {%- when 'search' -%}
+    <div class="page-content">
       <h1>{{ 'general.search' | t }}</h1>
-      <form action="{{ routes.search_url }}"><input type="search" name="q" value="{{ search.terms | escape }}"></form>
+      <form action="{{ routes.search_url }}"><input type="search" name="q" value="{{ search.terms | escape }}" aria-label="{{ 'general.search' | t }}"></form>
       {%- for result in search.results -%}<p><a href="{{ result.url }}">{{ result.title }}</a></p>{%- endfor -%}
-    {%- when '404' -%}<h1>404</h1><p>{{ 'general.not_found' | t }}</p>
-    {%- when 'password' -%}<h1>{{ shop.name }}</h1>
-    {%- else -%}<h1>{{ page_title }}</h1>
-  {%- endcase -%}
-</div>
+    </div>
+
+  {%- when 'page' -%}
+    <div class="grid page-content">
+      <div class="cell cell--span-2">
+        <h1>{{ page.title }}</h1>
+        <div class="rte">{{ page.content }}</div>
+      </div>
+    </div>
+
+  {%- when '404' -%}
+    <div class="page-content"><h1>404</h1><p>{{ 'general.not_found' | t }}</p></div>
+
+  {%- else -%}
+    <div class="page-content"><h1>{{ page_title }}</h1></div>
+{%- endcase -%}
 
 {% schema %}
 { "name": "Main content", "settings": [] }

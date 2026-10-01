@@ -1,12 +1,19 @@
-<div class="page-width">
-  <h1>{{ collection.title }}</h1>
-  <ul class="product-grid">
+{%- paginate collection.products by 24 -%}
+  {% render 'catalogue-filter' %}
+
+  <div class="grid product-grid">
     {%- for product in collection.products -%}
-      <li>{% render 'product-card', product: product %}</li>
+      <div class="cell" data-tags="{{ product.tags | join: ',' | downcase | escape }}">{% render 'product-card', product: product %}</div>
     {%- endfor -%}
-  </ul>
-  {{ paginate | default: '' }}
-</div>
+  </div>
+
+  {%- if paginate.pages > 1 -%}
+    <nav class="pagination" aria-label="{{ 'general.pagination' | t }}">
+      {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{{ 'general.previous' | t }}</a>{%- endif -%}
+      {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{{ 'general.next' | t }}</a>{%- endif -%}
+    </nav>
+  {%- endif -%}
+{%- endpaginate -%}
 
 {% schema %}
 { "name": "Collection", "settings": [] }

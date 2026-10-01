@@ -1,20 +1,25 @@
-<div class="page-width">
-  <h2>{{ section.settings.title }}</h2>
-  <ul class="product-grid">
-    {%- for product in section.settings.collection.products limit: section.settings.limit -%}
-      <li>{% render 'product-card', product: product %}</li>
-    {%- endfor -%}
-  </ul>
+{%- assign products = section.settings.collection.products -%}
+{%- if section.settings.collection == blank -%}
+  {%- assign products = collections.all.products -%}
+{%- endif -%}
+
+{% render 'catalogue-filter' %}
+
+<div class="grid product-grid">
+  {%- for product in products limit: section.settings.limit -%}
+    <div class="cell" data-tags="{{ product.tags | join: ',' | downcase | escape }}">
+      {% render 'product-card', product: product %}
+    </div>
+  {%- endfor -%}
 </div>
 
 {% schema %}
 {
-  "name": "Featured collection",
+  "name": "Product grid",
   "settings": [
-    { "type": "text", "id": "title", "label": "Heading", "default": "Featured" },
-    { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "range", "id": "limit", "label": "Products", "min": 2, "max": 12, "step": 1, "default": 4 }
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty to show all products." },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 4, "max": 48, "step": 4, "default": 24 }
   ],
-  "presets": [{ "name": "Featured collection" }]
+  "presets": [{ "name": "Product grid" }]
 }
 {% endschema %}

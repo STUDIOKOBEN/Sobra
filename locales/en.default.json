@@ -3,11 +3,27 @@
     "page": "Page {{ page }}",
     "skip_to_content": "Skip to content",
     "main_menu": "Main menu",
+    "footer_menu": "Footer menu",
     "cart": "Cart",
+    "about": "About",
+    "filter": "Filter by category",
+    "all": "All",
+    "cart_empty": "Your cart is empty.",
+    "continue_shopping": "Continue shopping",
     "checkout": "Check out",
+    "total": "Total",
+    "quantity": "Quantity",
+    "remove": "Remove",
     "search": "Search",
     "collections": "Collections",
     "add_to_cart": "Add to cart",
-    "not_found": "Page not found"
+    "not_found": "Page not found",
+    "pagination": "Pagination",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "products": {
+    "sold_out": "Sold out",
+    "variant": "Option"
   }
 }

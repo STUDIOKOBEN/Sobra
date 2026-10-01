@@ -1,7 +1,29 @@
-<a href="{{ product.url }}">
-  {%- if product.featured_image -%}
-    <img src="{{ product.featured_image | image_url: width: 480 }}" alt="{{ product.featured_image.alt | escape }}" width="480" loading="lazy">
-  {%- endif -%}
-  <span>{{ product.title }}</span>
-  <span>{{ product.price | money }}</span>
+{% doc %}
+  Renders a product as an uppercase label (product type, or month and year of publishing)
+  above an image on a grey field, with its title, vendor and price below.
+
+  @param {object} product - The product to render
+  @param {string} [loading] - Image loading attribute, defaults to lazy
+
+  @example
+  {% render 'product-card', product: product %}
+{% enddoc %}
+
+{%- assign image_loading = loading | default: 'lazy' -%}
+<a href="{{ product.url }}" class="product-card">
+  <p class="product-card__label">
+    {%- if product.type != blank -%}{{ product.type }}{%- else -%}{{ product.published_at | date: '%B %Y' }}{%- endif -%}
+  </p>
+  <div class="product-card__image">
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 600 | image_tag: loading: image_loading, sizes: '(max-width: 560px) 100vw, (max-width: 960px) 50vw, 25vw', widths: '300, 450, 600' }}
+    {%- endif -%}
+  </div>
+  <div class="product-card__text">
+    <span class="product-card__title">{{ product.title }}</span>
+    {%- if product.vendor != blank and product.vendor != shop.name -%}<span>{{ product.vendor }}</span>{%- endif -%}
+    <span>
+      {%- if product.available -%}{{ product.price | money }}{%- else -%}<span class="sold-out">{{ 'products.sold_out' | t }}</span>{%- endif -%}
+    </span>
+  </div>
 </a>

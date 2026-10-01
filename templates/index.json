@@ -1,6 +1,6 @@
 {
   "sections": {
-    "featured": { "type": "featured-collection", "settings": {} }
+    "products": { "type": "featured-collection", "settings": { "limit": 24 } }
   },
-  "order": ["featured"]
+  "order": ["products"]
 }

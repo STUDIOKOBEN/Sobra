@@ -1,18 +1,36 @@
-<div class="page-width">
-  {%- if product.featured_image -%}
-    <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | escape }}" width="800">
-  {%- endif -%}
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  {%- form 'product', product -%}
-    <select name="id">
-      {%- for variant in product.variants -%}
-        <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}</option>
-      {%- endfor -%}
-    </select>
-    <button type="submit">{{ 'general.add_to_cart' | t }}</button>
-  {%- endform -%}
-  <div>{{ product.description }}</div>
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="grid product-page">
+  <div class="cell cell--span-2 product-page__images">
+    {%- for image in product.images -%}
+      <div class="product-card__image">
+        {{ image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(max-width: 960px) 100vw, 50vw', widths: '600, 900, 1200', alt: image.alt | default: product.title }}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="cell product-page__info">
+    <h1 class="product-page__title">{{ product.title }}</h1>
+    {%- if product.vendor != blank and product.vendor != shop.name -%}<p>{{ product.vendor }}</p>{%- endif -%}
+    <p>{{ current_variant.price | money }}</p>
+
+    {%- form 'product', product, class: 'product-form' -%}
+      {%- unless product.has_only_default_variant -%}
+        <select name="id" aria-label="{{ 'products.variant' | t }}">
+          {%- for variant in product.variants -%}
+            <option value="{{ variant.id }}"{% if variant == current_variant %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>{{ variant.title }}</option>
+          {%- endfor -%}
+        </select>
+      {%- else -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+      {%- endunless -%}
+      <button type="submit" class="button"{% unless current_variant.available %} disabled{% endunless %}>
+        {%- if current_variant.available -%}{{ 'general.add_to_cart' | t }}{%- else -%}{{ 'products.sold_out' | t }}{%- endif -%}
+      </button>
+    {%- endform -%}
+
+    <div class="rte">{{ product.description }}</div>
+  </div>
 </div>
 
 {% schema %}
