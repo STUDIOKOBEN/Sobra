@@ -1,0 +1,13 @@
+<div class="page-width">
+  <h1>{{ collection.title }}</h1>
+  <ul class="product-grid">
+    {%- for product in collection.products -%}
+      <li>{% render 'product-card', product: product %}</li>
+    {%- endfor -%}
+  </ul>
+  {{ paginate | default: '' }}
+</div>
+
+{% schema %}
+{ "name": "Collection", "settings": [] }
+{% endschema %}

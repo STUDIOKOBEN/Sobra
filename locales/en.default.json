@@ -1,0 +1,13 @@
+{
+  "general": {
+    "page": "Page {{ page }}",
+    "skip_to_content": "Skip to content",
+    "main_menu": "Main menu",
+    "cart": "Cart",
+    "checkout": "Check out",
+    "search": "Search",
+    "collections": "Collections",
+    "add_to_cart": "Add to cart",
+    "not_found": "Page not found"
+  }
+}

@@ -1,0 +1,28 @@
+<div class="page-width">
+  {%- case template.name -%}
+    {%- when 'page' -%}<h1>{{ page.title }}</h1>{{ page.content }}
+    {%- when 'article' -%}<h1>{{ article.title }}</h1>{{ article.content }}
+    {%- when 'blog' -%}<h1>{{ blog.title }}</h1>
+      {%- for article in blog.articles -%}<h2><a href="{{ article.url }}">{{ article.title }}</a></h2>{%- endfor -%}
+    {%- when 'cart' -%}
+      <h1>{{ 'general.cart' | t }}</h1>
+      <form action="{{ routes.cart_url }}" method="post">
+        {%- for item in cart.items -%}
+          <p>{{ item.product.title }} × <input type="number" name="updates[]" value="{{ item.quantity }}" min="0"> {{ item.final_line_price | money }}</p>
+        {%- endfor -%}
+        <p>{{ cart.total_price | money }}</p>
+        <button type="submit" name="checkout">{{ 'general.checkout' | t }}</button>
+      </form>
+    {%- when 'search' -%}
+      <h1>{{ 'general.search' | t }}</h1>
+      <form action="{{ routes.search_url }}"><input type="search" name="q" value="{{ search.terms | escape }}"></form>
+      {%- for result in search.results -%}<p><a href="{{ result.url }}">{{ result.title }}</a></p>{%- endfor -%}
+    {%- when '404' -%}<h1>404</h1><p>{{ 'general.not_found' | t }}</p>
+    {%- when 'password' -%}<h1>{{ shop.name }}</h1>
+    {%- else -%}<h1>{{ page_title }}</h1>
+  {%- endcase -%}
+</div>
+
+{% schema %}
+{ "name": "Main content", "settings": [] }
+{% endschema %}

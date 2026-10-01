@@ -1,0 +1,20 @@
+<div class="page-width">
+  {%- if product.featured_image -%}
+    <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | escape }}" width="800">
+  {%- endif -%}
+  <h1>{{ product.title }}</h1>
+  <p>{{ product.price | money }}</p>
+  {%- form 'product', product -%}
+    <select name="id">
+      {%- for variant in product.variants -%}
+        <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}</option>
+      {%- endfor -%}
+    </select>
+    <button type="submit">{{ 'general.add_to_cart' | t }}</button>
+  {%- endform -%}
+  <div>{{ product.description }}</div>
+</div>
+
+{% schema %}
+{ "name": "Product", "settings": [] }
+{% endschema %}

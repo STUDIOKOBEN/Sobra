@@ -1,0 +1,17 @@
+:root {
+  --color-bg: #fff;
+  --color-text: #111;
+  --page-width: 1200px;
+  --gutter: 20px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: Helvetica, Arial, sans-serif; line-height: 1.5; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+.page-width { max-width: var(--page-width); margin: 0 auto; padding: 0 var(--gutter); }
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus { left: var(--gutter); top: var(--gutter); background: #fff; padding: 8px; z-index: 10; }
+.site-header { display: flex; justify-content: space-between; align-items: center; padding: var(--gutter); }
+.site-header nav a { margin-left: 20px; text-decoration: none; }
+.site-footer { padding: 40px var(--gutter); }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--gutter); list-style: none; padding: 0; }

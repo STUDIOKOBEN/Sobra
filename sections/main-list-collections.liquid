@@ -1,0 +1,12 @@
+<div class="page-width">
+  <h1>{{ 'general.collections' | t }}</h1>
+  <ul class="product-grid">
+    {%- for collection in collections -%}
+      <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{ "name": "Collection list", "settings": [] }
+{% endschema %}
